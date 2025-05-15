@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+        <html lang="es">
+          <head>
+            <meta charset="UTF-8" />
+            <title>Árbol del Amor</title>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+            <style>
+              body {
+                margin: 0;
+                background-color: #fef3f3;
+                font-family: 'Arial', sans-serif;
+              }
+
+              canvas {
+                display: block;
+              }
+
+              #contador {
+                position: absolute;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 18px;
+                text-align: center;
+                color: #333;
+              }
+
+              #mensaje {
+                position: absolute;
+                top: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 20px;
+                color: #8b0000;
+              }
+            </style>
+          </head>
+          <body>
+            <div id="mensaje">Para el amor de mi vida ❤️</div>
+            <div id="contador"></div>
+
+            <script>
+              let corazones = [];
+
+              function setup() {
+                createCanvas(windowWidth, windowHeight);
+                textAlign(CENTER, CENTER);
+                noStroke();
+
+                for (let i = 0; i < 200; i++) {
+                  corazones.push(new Corazon());
+                }
+
+                setInterval(actualizarContador, 1000);
+                actualizarContador();
+              }
+
+              function draw() {
+                background('#fef3f3');
+
+                drawTronco();
+
+                corazones.forEach((c) => {
+                  c.update();
+                  c.display();
+                });
+              }
+
+              function drawTronco() {
+                fill('#4e342e');
+                rect(width / 2 - 15, height / 2 + 80, 30, 150, 20);
+              }
+
+              class Corazon {
+                constructor() {
+                  this.reset();
+                }
+
+                reset() {
+                  const angle = random(TWO_PI);
+                  const r = random(100, 250);
+                  this.x = width / 2 + cos(angle) * r;
+                  this.y = height / 2 - 50 + sin(angle) * r;
+                  this.size = random(10, 18);
+                  this.color = color(random(220, 255), random(50, 150), random(150, 255));
+                  this.speed = random(0.1, 0.5);
+                }
+
+                update() {
+                  this.y += this.speed;
+                  if (this.y > height) this.reset();
+                }
+
+                display() {
+                  fill(this.color);
+                  textSize(this.size);
+                  text('❤', this.x, this.y);
+                }
+              }
+
+              function actualizarContador() {
+                const inicio = new Date("2025-04-03T00:00:00"); // Cambia esta fecha a la tuya
+                const ahora = new Date();
+                const diff = ahora - inicio;
+
+                const segundos = Math.floor(diff / 1000);
+                const minutos = Math.floor(segundos / 60);
+                const horas = Math.floor(minutos / 60);
+                const dias = Math.floor(horas / 24);
+
+                const s = segundos % 60;
+                const m = minutos % 60;
+                const h = horas % 24;
+
+                document.getElementById("contador").innerHTML =
+                  `Mi amor por ti comenzó hace...<br><strong>${dias}</strong> días <strong>${h}</strong> horas <strong>${m}</strong> minutos <strong>${s}</strong> segundos`;
+              }
+            </script>
+          </body>
+        </html>
